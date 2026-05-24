@@ -4,6 +4,8 @@
 
 Ein leichtgewichtiges Spendensammler-Tool, ähnlich dem Wikipedia-Spendenbannermodell. Projektverantwortliche legen eine Kampagne mit Zielbeträgen an und verteilen diese über QR-Codes und Links. Spender können über PayPal, Wero oder Kreditkarte (Stripe) spenden und optional eine Nachricht hinterlassen. Der Fortschritt wird in Echtzeit angezeigt. Mehrere Kampagnen können parallel aktiv sein.
 
+Das System ist **Single-Tenant**: Es gibt genau eine Organisation, die die Instanz betreibt. Mandantenfähigkeit ist nicht vorgesehen. Alle Kampagnen, Spenden und Einstellungen gehören zu dieser einen Organisation.
+
 ---
 
 ## Technologie-Stack
