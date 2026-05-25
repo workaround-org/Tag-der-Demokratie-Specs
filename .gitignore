@@ -131,3 +131,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+
+# JWT signing keys — generate per environment, never commit
+src/main/resources/private-key.pem
+src/main/resources/public-key.pem

@@ -1,0 +1,63 @@
+{#include tags/adminLayout}
+{#title}Dashboard{/title}
+{#content}
+
+<div class="page-header">
+  <h1>Dashboard</h1>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value">{totalCampaigns}</div>
+    <div class="stat-label">Kampagnen gesamt</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{activeCampaigns}</div>
+    <div class="stat-label">Aktive Kampagnen</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{totalDonations}</div>
+    <div class="stat-label">Spenden gesamt</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{totalRaised.euros()}</div>
+    <div class="stat-label">Bestätigt gesammelt</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h2 style="font-size:1rem;font-weight:600;margin-bottom:1rem;">Letzte bestätigte Spenden</h2>
+    {#if recentDonations.isEmpty()}
+    <p class="empty-state">Noch keine bestätigten Spenden.</p>
+    {#else}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Spender</th>
+            <th>Kampagne</th>
+            <th>Betrag</th>
+            <th>Zahlungsart</th>
+            <th>Datum</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#for d in recentDonations}
+          <tr>
+            <td>{d.donorName ?: "–"}</td>
+            <td>{d.campaign.title}</td>
+            <td style="font-weight:500;">{d.amount.euros()}</td>
+            <td>{d.paymentMethod}</td>
+            <td class="text-muted">{d.confirmedAt.isoDate()}</td>
+          </tr>
+          {/for}
+        </tbody>
+      </table>
+    </div>
+    {/if}
+  </div>
+</div>
+
+{/content}
+{/include}

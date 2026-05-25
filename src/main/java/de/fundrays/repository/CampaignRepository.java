@@ -23,4 +23,8 @@ public class CampaignRepository implements PanacheRepository<Campaign> {
     public List<Campaign> findActive() {
         return findByStatus(CampaignStatus.ACTIVE);
     }
+
+    public List<Campaign> listAllOrdered() {
+        return list("order by createdAt desc");
+    }
 }

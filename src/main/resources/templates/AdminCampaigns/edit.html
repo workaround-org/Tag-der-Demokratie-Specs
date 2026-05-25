@@ -1,0 +1,71 @@
+{#include tags/adminLayout}
+{#title}Kampagne bearbeiten{/title}
+{#content}
+
+<div class="page-header">
+  <h1>Kampagne bearbeiten</h1>
+  <a href="/admin/campaigns" class="btn btn-secondary">← Zurück</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form method="post" action="/admin/campaigns/{campaign.slug}">
+      <input type="hidden" name="{inject:csrf.parameterName}" value="{inject:csrf.token}">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="title">Titel *</label>
+          <input class="form-control" type="text" id="title" name="title"
+                 value="{campaign.title}" required>
+        </div>
+        <div class="form-group">
+          <label for="slug">Slug</label>
+          <input class="form-control" type="text" id="slug" value="{campaign.slug}" readonly>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Beschreibung</label>
+        <textarea class="form-control" id="description" name="description">{campaign.description}</textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="goalAmountEuros">Spendenziel (€) *</label>
+          <input class="form-control" type="number" id="goalAmountEuros" name="goalAmountEuros"
+                 value="{campaign.goalAmount.eurosAmount()}" min="1" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="deadline">Deadline</label>
+          <input class="form-control" type="date" id="deadline" name="deadline"
+                 value="{deadlineValue}">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="coverImageUrl">Cover-Bild URL</label>
+          <input class="form-control" type="url" id="coverImageUrl" name="coverImageUrl"
+                 value="{campaign.coverImageUrl ?: ''}">
+        </div>
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select class="form-control" id="status" name="status">
+            <option value="ACTIVE"    {#if campaign.status.name() == "ACTIVE"}selected{/if}>Aktiv</option>
+            <option value="PAUSED"    {#if campaign.status.name() == "PAUSED"}selected{/if}>Pausiert</option>
+            <option value="COMPLETED" {#if campaign.status.name() == "COMPLETED"}selected{/if}>Abgeschlossen</option>
+            <option value="ARCHIVED"  {#if campaign.status.name() == "ARCHIVED"}selected{/if}>Archiviert</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Speichern</button>
+        <a href="/admin/campaigns" class="btn btn-secondary">Abbrechen</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{/content}
+{/include}

@@ -38,4 +38,22 @@ public class DonationRepository implements PanacheRepository<Donation> {
     public long countConfirmedByCampaignId(UUID campaignId) {
         return count("campaign.id = ?1 and status = ?2", campaignId, DonationStatus.CONFIRMED);
     }
+
+    public long sumAllConfirmed() {
+        Long result = getEntityManager()
+                .createQuery("select sum(d.amount) from Donation d where d.status = ?1", Long.class)
+                .setParameter(1, DonationStatus.CONFIRMED)
+                .getSingleResult();
+        return result == null ? 0L : result;
+    }
+
+    public List<Donation> listRecentConfirmed(int limit) {
+        return find("status = ?1 order by createdAt desc", DonationStatus.CONFIRMED)
+                .page(0, limit)
+                .list();
+    }
+
+    public List<Donation> listAllOrdered() {
+        return list("order by createdAt desc");
+    }
 }

@@ -1,0 +1,60 @@
+{#include tags/adminLayout}
+{#title}Neue Kampagne{/title}
+{#content}
+
+<div class="page-header">
+  <h1>Neue Kampagne</h1>
+  <a href="/admin/campaigns" class="btn btn-secondary">← Zurück</a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <form method="post" action="/admin/campaigns">
+      <input type="hidden" name="{inject:csrf.parameterName}" value="{inject:csrf.token}">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="title">Titel *</label>
+          <input class="form-control" type="text" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+          <label for="slug">Slug *</label>
+          <input class="form-control" type="text" id="slug" name="slug" required
+                 pattern="[a-z0-9\-]+" placeholder="meine-kampagne">
+          <p class="form-hint">Kleinbuchstaben, Ziffern, Bindestriche. Nicht mehr änderbar.</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Beschreibung</label>
+        <textarea class="form-control" id="description" name="description"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="goalAmountEuros">Spendenziel (€) *</label>
+          <input class="form-control" type="number" id="goalAmountEuros" name="goalAmountEuros"
+                 min="1" step="0.01" required placeholder="1000.00">
+        </div>
+        <div class="form-group">
+          <label for="deadline">Deadline</label>
+          <input class="form-control" type="date" id="deadline" name="deadline">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="coverImageUrl">Cover-Bild URL</label>
+        <input class="form-control" type="url" id="coverImageUrl" name="coverImageUrl"
+               placeholder="https://...">
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Kampagne erstellen</button>
+        <a href="/admin/campaigns" class="btn btn-secondary">Abbrechen</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{/content}
+{/include}

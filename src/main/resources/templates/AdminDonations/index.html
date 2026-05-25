@@ -1,0 +1,66 @@
+{#include tags/adminLayout}
+{#title}Spenden{/title}
+{#content}
+
+<div class="page-header">
+  <h1>
+    {#if filterCampaign}
+    Spenden – {filterCampaign.title}
+    {#else}
+    Alle Spenden
+    {/if}
+  </h1>
+  {#if filterCampaign}
+  <a href="/admin/donations" class="btn btn-secondary">Alle anzeigen</a>
+  {/if}
+</div>
+
+<div class="card">
+  {#if donations.isEmpty()}
+  <div class="card-body">
+    <p class="empty-state">Keine Spenden gefunden.</p>
+  </div>
+  {#else}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Spender</th>
+          <th>E-Mail</th>
+          <th>Kampagne</th>
+          <th>Betrag</th>
+          <th>Zahlungsart</th>
+          <th>Status</th>
+          <th>Nachricht</th>
+          <th>Datum</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#for d in donations}
+        <tr>
+          <td style="font-weight:500;">{d.donorName ?: "–"}</td>
+          <td class="text-muted" style="font-size:0.8125rem;">{d.donorEmail ?: "–"}</td>
+          <td>
+            <a href="/admin/donations?campaign={d.campaign.slug}" style="color:inherit;text-decoration:none;">
+              {d.campaign.title}
+            </a>
+          </td>
+          <td style="font-weight:500;">{d.amount.euros()}</td>
+          <td>{d.paymentMethod}</td>
+          <td>
+            <span class="badge badge-{d.status.name().toLowerCase()}">{d.status}</span>
+          </td>
+          <td class="text-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+            {d.message ?: "–"}
+          </td>
+          <td class="text-muted">{d.createdAt.isoDate()}</td>
+        </tr>
+        {/for}
+      </tbody>
+    </table>
+  </div>
+  {/if}
+</div>
+
+{/content}
+{/include}

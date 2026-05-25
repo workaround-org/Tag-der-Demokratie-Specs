@@ -1,0 +1,74 @@
+{#include tags/adminLayout}
+{#title}Kampagnen{/title}
+{#content}
+
+<div class="page-header">
+  <h1>Kampagnen</h1>
+  <a href="/admin/campaigns/new" class="btn btn-primary">+ Neue Kampagne</a>
+</div>
+
+<div class="card">
+  {#if campaigns.isEmpty()}
+  <div class="card-body">
+    <p class="empty-state">Noch keine Kampagnen vorhanden.</p>
+  </div>
+  {#else}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Titel</th>
+          <th>Slug</th>
+          <th>Status</th>
+          <th>Ziel</th>
+          <th>Gesammelt</th>
+          <th>Fortschritt</th>
+          <th>Deadline</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#for c in campaigns}
+        {#let raised = raisedByCampaign.get(c.id)}
+        <tr>
+          <td style="font-weight:500;">{c.title}</td>
+          <td class="text-muted" style="font-family:monospace;font-size:0.8125rem;">{c.slug}</td>
+          <td>
+            <span class="badge badge-{c.status.name().toLowerCase()}">{c.status}</span>
+          </td>
+          <td>{c.goalAmount.euros()}</td>
+          <td>{raised.euros()}</td>
+          <td>
+            <div class="prog-wrap" title="{fmt:percent(raised, c.goalAmount)}%">
+              <div class="prog-bar" style="width:{fmt:percent(raised, c.goalAmount)}%"></div>
+            </div>
+          </td>
+          <td class="text-muted">{c.deadline.isoDate() ?: "–"}</td>
+          <td>
+            <div class="actions">
+              <a href="/admin/campaigns/{c.slug}/edit" class="btn btn-secondary btn-sm">Bearbeiten</a>
+              <a href="/admin/donations?campaign={c.slug}" class="btn btn-secondary btn-sm">Spenden</a>
+              {#if c.status.name() == "ACTIVE" || c.status.name() == "PAUSED"}
+              <form method="post" action="/admin/campaigns/{c.slug}/archive" style="display:inline">
+                <input type="hidden" name="{inject:csrf.parameterName}" value="{inject:csrf.token}">
+                <button type="submit" class="btn btn-secondary btn-sm">Archivieren</button>
+              </form>
+              {#else}
+              <form method="post" action="/admin/campaigns/{c.slug}/activate" style="display:inline">
+                <input type="hidden" name="{inject:csrf.parameterName}" value="{inject:csrf.token}">
+                <button type="submit" class="btn btn-secondary btn-sm">Aktivieren</button>
+              </form>
+              {/if}
+            </div>
+          </td>
+        </tr>
+        {/let}
+        {/for}
+      </tbody>
+    </table>
+  </div>
+  {/if}
+</div>
+
+{/content}
+{/include}
