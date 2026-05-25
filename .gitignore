@@ -1,3 +1,6 @@
+# Maven build output
+target/
+
 .idea
 
 ### JetBrains template
