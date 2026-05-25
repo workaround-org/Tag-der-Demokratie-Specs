@@ -1,4 +1,4 @@
-package util;
+package de.fundrays.util;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ import jakarta.enterprise.event.Observes;
 
 import io.quarkus.runtime.LaunchMode;
 import io.quarkus.runtime.StartupEvent;
-import model.Todo;
+import de.fundrays.model.Todo;
 
 @ApplicationScoped
 public class Startup {

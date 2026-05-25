@@ -1,4 +1,4 @@
-package util;
+package de.fundrays.util;
 
 import io.quarkus.qute.TemplateExtension;
 

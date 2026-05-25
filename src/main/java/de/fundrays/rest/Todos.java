@@ -1,4 +1,4 @@
-package rest;
+package de.fundrays.rest;
 
 import java.util.List;
 
@@ -11,13 +11,13 @@ import org.jboss.resteasy.reactive.RestForm;
 import io.quarkus.qute.TemplateInstance;
 import io.quarkus.qute.CheckedTemplate;
 import io.quarkiverse.renarde.Controller;
-import model.Todo;
+import de.fundrays.model.Todo;
 
 /**
  * This defines a REST controller, each method will be available under the "Classname/method" URI by convention
  */
 public class Todos extends Controller {
-    
+
     /**
      * This defines templates available in src/main/resources/templates/Classname/method.html by convention
      */
@@ -44,7 +44,7 @@ public class Todos extends Controller {
         // renders the Todos/todos.html template with our list of Todo entities
         return Templates.todos(Todo.listAll());
     }
-    
+
     // Creates a POST action at Todos/add taking a form element named task
     @POST
     public void add(@RestForm @NotBlank String task) {

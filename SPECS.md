@@ -10,10 +10,15 @@ Das System ist **Single-Tenant**: Es gibt genau eine Organisation, die die Insta
 
 ## Technologie-Stack
 
-- **Backend:** [Quarkus](https://quarkus.io/) mit [Renarde](https://quarkiverse.github.io/quarkiverse-docs/quarkus-renarde/dev/) (MVC-Framework) und [Qute](https://quarkus.io/guides/qute) (Templating)
-- **E-Mail:** Quarkus Mailer (`io.quarkus:quarkus-mailer`) via SMTP mit Qute-Templates für alle ausgehenden Mails
-- **Datenbank:** relationale DB via Hibernate ORM with Panache (PostgreSQL empfohlen)
-- **QR-Code-Generierung:** serverseitig, z. B. via ZXing
+- **Backend:** [Quarkus](https://quarkus.io/) 3.35.4, Java 25
+- **REST:** `quarkus-rest` + `quarkus-rest-jackson` (Jakarta REST, Jackson JSON)
+- **API-Doku:** `quarkus-smallrye-openapi` (OpenAPI / Swagger UI)
+- **Web-Framework:** `quarkus-renarde` 3.1.7 mit [Qute](https://quarkus.io/guides/qute) (MVC, server-side rendering)
+- **Datenbank:** `quarkus-hibernate-orm` + `quarkus-hibernate-orm-panache` + `quarkus-jdbc-postgresql` (PostgreSQL, Repository-Pattern)
+- **Sicherheit:** `quarkus-security-jpa` (JPA-basierte Authentifizierung/Autorisierung)
+- **Health:** `quarkus-smallrye-health` (Liveness/Readiness-Probes)
+- **E-Mail:** `quarkus-mailer` via SMTP mit Qute-Templates
+- **QR-Code-Generierung:** serverseitig via ZXing
 
 ---
 
