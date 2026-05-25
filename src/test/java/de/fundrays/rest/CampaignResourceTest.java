@@ -156,6 +156,64 @@ class CampaignResourceTest {
                 .body("message", containsString("existing-slug"));
     }
 
+    @Test
+    @TestSecurity(user = "admin", roles = {"admin"})
+    void update_changesTitleAndStatus() {
+        // given
+        QuarkusTransaction.requiringNew().run(() ->
+                campaignRepository.persist(aCampaign("my-campaign", CampaignStatus.ACTIVE)));
+        var body = """
+                {"title":"Updated Title","status":"PAUSED"}
+                """;
+
+        // when
+        var response = given()
+                .contentType(ContentType.JSON)
+                .body(body)
+                .when().patch("/api/campaigns/my-campaign");
+
+        // then
+        response.then().statusCode(200)
+                .body("slug", equalTo("my-campaign"))
+                .body("title", equalTo("Updated Title"))
+                .body("status", equalTo("PAUSED"));
+    }
+
+    @Test
+    @TestSecurity(user = "admin", roles = {"admin"})
+    void update_returns404ForUnknownSlug() {
+        // given — no campaigns in DB
+        var body = """
+                {"status":"PAUSED"}
+                """;
+
+        // when
+        var response = given()
+                .contentType(ContentType.JSON)
+                .body(body)
+                .when().patch("/api/campaigns/nonexistent");
+
+        // then
+        response.then().statusCode(404);
+    }
+
+    @Test
+    void update_withoutAuth_returns401() {
+        // given
+        var body = """
+                {"status":"PAUSED"}
+                """;
+
+        // when
+        var response = given()
+                .contentType(ContentType.JSON)
+                .body(body)
+                .when().patch("/api/campaigns/any-campaign");
+
+        // then
+        response.then().statusCode(401);
+    }
+
     private Campaign aCampaign(String slug, CampaignStatus status) {
         Campaign c = new Campaign();
         c.slug = slug;

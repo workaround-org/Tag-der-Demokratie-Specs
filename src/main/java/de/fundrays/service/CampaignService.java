@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @ApplicationScoped
 public class CampaignService {
@@ -41,6 +42,14 @@ public class CampaignService {
     @Transactional(Transactional.TxType.SUPPORTS)
     public long getDonationCount(UUID campaignId) {
         return donationRepository.countConfirmedByCampaignId(campaignId);
+    }
+
+    @Transactional
+    public Campaign update(String slug, Consumer<Campaign> updater) {
+        Campaign campaign = campaignRepository.findBySlug(slug)
+                .orElseThrow(() -> new CampaignNotFoundException(slug));
+        updater.accept(campaign);
+        return campaign;
     }
 
     @Transactional

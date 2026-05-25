@@ -3,6 +3,8 @@ package de.fundrays.rest;
 import de.fundrays.model.Campaign;
 import de.fundrays.rest.dto.CampaignResponse;
 import de.fundrays.rest.dto.CreateCampaignRequest;
+import de.fundrays.rest.dto.UpdateCampaignRequest;
+import de.fundrays.service.CampaignNotFoundException;
 import de.fundrays.service.CampaignService;
 import de.fundrays.service.SlugConflictException;
 import org.jboss.resteasy.reactive.ResponseStatus;
@@ -13,6 +15,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -42,6 +45,25 @@ public class CampaignResource {
         return campaignService.findBySlug(slug)
                 .map(this::toResponse)
                 .orElseThrow(() -> new NotFoundException("Campaign not found: " + slug));
+    }
+
+    @PATCH
+    @Path("/{slug}")
+    @RolesAllowed("admin")
+    public CampaignResponse update(@PathParam("slug") String slug, @Valid UpdateCampaignRequest request) {
+        try {
+            return toResponse(campaignService.update(slug, c -> {
+                if (request.title() != null) c.title = request.title();
+                if (request.description() != null) c.description = request.description();
+                if (request.goalAmount() != null) c.goalAmount = request.goalAmount();
+                if (request.currency() != null) c.currency = request.currency();
+                if (request.deadline() != null) c.deadline = request.deadline();
+                if (request.coverImageUrl() != null) c.coverImageUrl = request.coverImageUrl();
+                if (request.status() != null) c.status = request.status();
+            }));
+        } catch (CampaignNotFoundException e) {
+            throw new NotFoundException(e.getMessage());
+        }
     }
 
     @POST
