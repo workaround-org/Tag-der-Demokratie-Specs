@@ -3,7 +3,6 @@ package de.fundrays.repository;
 import de.fundrays.model.AdminUser;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
@@ -20,14 +19,10 @@ class AdminUserRepositoryTest {
     @Inject
     AdminUserRepository adminUserRepository;
 
-    @BeforeEach
-    void setup() {
-        adminUserRepository.deleteAll();
-    }
-
     @Test
     void findByUsername_returnsMatchingUser() {
         // given
+        adminUserRepository.deleteAll();
         adminUserRepository.persist(anAdminUser("alice"));
 
         // when
@@ -40,7 +35,8 @@ class AdminUserRepositoryTest {
 
     @Test
     void findByUsername_returnsEmptyForUnknownUsername() {
-        // given — no users in DB
+        // given
+        adminUserRepository.deleteAll();
 
         // when
         Optional<AdminUser> result = adminUserRepository.findByUsername("nobody");
@@ -52,6 +48,7 @@ class AdminUserRepositoryTest {
     @Test
     void isLastAdmin_returnsTrueWhenOnlyOneAdminExists() {
         // given
+        adminUserRepository.deleteAll();
         adminUserRepository.persist(anAdminUser("only-admin"));
 
         // when
@@ -64,6 +61,7 @@ class AdminUserRepositoryTest {
     @Test
     void isLastAdmin_returnsFalseWhenMultipleAdminsExist() {
         // given
+        adminUserRepository.deleteAll();
         adminUserRepository.persist(anAdminUser("admin-one"));
         adminUserRepository.persist(anAdminUser("admin-two"));
 

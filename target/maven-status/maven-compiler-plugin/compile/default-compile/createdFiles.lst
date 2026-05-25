@@ -1,0 +1,13 @@
+de/fundrays/repository/AdminUserRepository.class
+de/fundrays/repository/CampaignRepository.class
+de/fundrays/MyLivenessCheck.class
+de/fundrays/repository/OrganizationSettingsRepository.class
+de/fundrays/model/DonationStatus.class
+de/fundrays/GreetingResource.class
+de/fundrays/model/PaymentMethod.class
+de/fundrays/model/Campaign.class
+de/fundrays/repository/DonationRepository.class
+de/fundrays/model/AdminUser.class
+de/fundrays/model/OrganizationSettings.class
+de/fundrays/model/Donation.class
+de/fundrays/model/CampaignStatus.class

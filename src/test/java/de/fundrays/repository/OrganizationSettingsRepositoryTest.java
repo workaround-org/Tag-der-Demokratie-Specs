@@ -3,7 +3,6 @@ package de.fundrays.repository;
 import de.fundrays.model.OrganizationSettings;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
@@ -18,11 +17,6 @@ class OrganizationSettingsRepositoryTest {
 
     @Inject
     OrganizationSettingsRepository settingsRepository;
-
-    @BeforeEach
-    void setup() {
-        settingsRepository.deleteAll();
-    }
 
     @Test
     void load_returnsEmptyWhenNotConfigured() {

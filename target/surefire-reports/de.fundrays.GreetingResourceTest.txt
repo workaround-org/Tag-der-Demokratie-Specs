@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: de.fundrays.GreetingResourceTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.078 s -- in de.fundrays.GreetingResourceTest

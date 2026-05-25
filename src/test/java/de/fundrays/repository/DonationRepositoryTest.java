@@ -28,25 +28,17 @@ class DonationRepositoryTest {
     @Inject
     CampaignRepository campaignRepository;
 
-    private Campaign campaign;
-
     @BeforeEach
     void setup() {
         donationRepository.deleteAll();
         campaignRepository.deleteAll();
-
-        campaign = new Campaign();
-        campaign.slug = "test-campaign";
-        campaign.title = "Test Campaign";
-        campaign.goalAmount = 100000L;
-        campaign.createdAt = Instant.now();
-        campaign.status = CampaignStatus.ACTIVE;
-        campaignRepository.persist(campaign);
     }
 
     @Test
     void findByCampaignId_returnsOnlyDonationsForThatCampaign() {
         // given
+        Campaign campaign = aCampaign();
+        campaignRepository.persist(campaign);
         donationRepository.persist(aDonation(campaign, 500L, DonationStatus.CONFIRMED, "ref-1"));
         donationRepository.persist(aDonation(campaign, 1000L, DonationStatus.PENDING, "ref-2"));
 
@@ -60,6 +52,8 @@ class DonationRepositoryTest {
     @Test
     void findByProviderRef_returnsMatchingDonation() {
         // given
+        Campaign campaign = aCampaign();
+        campaignRepository.persist(campaign);
         donationRepository.persist(aDonation(campaign, 500L, DonationStatus.PENDING, "paypal-txn-42"));
 
         // when
@@ -84,6 +78,8 @@ class DonationRepositoryTest {
     @Test
     void sumConfirmedByCampaignId_sumsOnlyConfirmedDonations() {
         // given
+        Campaign campaign = aCampaign();
+        campaignRepository.persist(campaign);
         donationRepository.persist(aDonation(campaign, 1000L, DonationStatus.CONFIRMED, "ref-1"));
         donationRepository.persist(aDonation(campaign, 2000L, DonationStatus.CONFIRMED, "ref-2"));
         donationRepository.persist(aDonation(campaign, 500L, DonationStatus.PENDING, "ref-3"));
@@ -97,7 +93,9 @@ class DonationRepositoryTest {
 
     @Test
     void sumConfirmedByCampaignId_returnsZeroWhenNoDonations() {
-        // given — no donations in DB
+        // given
+        Campaign campaign = aCampaign();
+        campaignRepository.persist(campaign);
 
         // when
         long total = donationRepository.sumConfirmedByCampaignId(campaign.id);
@@ -109,6 +107,8 @@ class DonationRepositoryTest {
     @Test
     void countConfirmedByCampaignId_countsOnlyConfirmedDonations() {
         // given
+        Campaign campaign = aCampaign();
+        campaignRepository.persist(campaign);
         donationRepository.persist(aDonation(campaign, 1000L, DonationStatus.CONFIRMED, "ref-1"));
         donationRepository.persist(aDonation(campaign, 1000L, DonationStatus.FAILED, "ref-2"));
         donationRepository.persist(aDonation(campaign, 1000L, DonationStatus.CONFIRMED, "ref-3"));
@@ -118,6 +118,16 @@ class DonationRepositoryTest {
 
         // then
         assertEquals(2, count);
+    }
+
+    private Campaign aCampaign() {
+        Campaign c = new Campaign();
+        c.slug = "test-campaign-" + System.nanoTime();
+        c.title = "Test Campaign";
+        c.goalAmount = 100000L;
+        c.createdAt = Instant.now();
+        c.status = CampaignStatus.ACTIVE;
+        return c;
     }
 
     private Donation aDonation(Campaign c, long amount, DonationStatus status, String providerRef) {

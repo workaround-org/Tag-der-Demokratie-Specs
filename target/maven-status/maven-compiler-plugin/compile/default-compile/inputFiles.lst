@@ -1,0 +1,13 @@
+/Users/markus/git/fundrays/src/main/java/de/fundrays/GreetingResource.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/MyLivenessCheck.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/model/AdminUser.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/model/Campaign.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/model/CampaignStatus.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/model/Donation.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/model/DonationStatus.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/model/OrganizationSettings.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/model/PaymentMethod.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/repository/AdminUserRepository.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/repository/CampaignRepository.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/repository/DonationRepository.java
+/Users/markus/git/fundrays/src/main/java/de/fundrays/repository/OrganizationSettingsRepository.java

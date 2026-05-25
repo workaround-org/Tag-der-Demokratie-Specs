@@ -3,13 +3,11 @@ package de.fundrays.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 
 /** Singleton row — always id=1. Use OrganizationSettingsRepository.load() to retrieve. */
 @Entity
-@Table(name = "organization_settings")
 public class OrganizationSettings {
 
     @Id

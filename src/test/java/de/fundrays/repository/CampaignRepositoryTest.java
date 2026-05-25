@@ -4,7 +4,6 @@ import de.fundrays.model.Campaign;
 import de.fundrays.model.CampaignStatus;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
@@ -22,16 +21,10 @@ class CampaignRepositoryTest {
     @Inject
     CampaignRepository campaignRepository;
 
-    @BeforeEach
-    void setup() {
-        campaignRepository.deleteAll();
-    }
-
     @Test
     void findBySlug_returnsMatchingCampaign() {
         // given
-        Campaign campaign = aCampaign("spring-drive", CampaignStatus.ACTIVE);
-        campaignRepository.persist(campaign);
+        campaignRepository.persist(aCampaign("spring-drive", CampaignStatus.ACTIVE));
 
         // when
         Optional<Campaign> result = campaignRepository.findBySlug("spring-drive");
