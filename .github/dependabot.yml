@@ -1,0 +1,43 @@
+version: 2
+updates:
+  # GitHub Actions used in workflows
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-core:
+        comment: "GitHub-owned actions (checkout, setup-java, cache)"
+        patterns:
+          - "actions/*"
+      docker-actions:
+        comment: "Docker-owned actions (buildx, login, metadata, build-push)"
+        patterns:
+          - "docker/*"
+
+  # Maven dependencies and plugins
+  - package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      quarkus:
+        comment: "Quarkus platform BOM, extensions, and Quarkiverse add-ons"
+        patterns:
+          - "io.quarkus:*"
+          - "io.quarkiverse*:*"
+      test:
+        comment: "Test-scope libraries"
+        patterns:
+          - "io.rest-assured:*"
+      build-plugins:
+        comment: "Maven build and code-quality plugins"
+        patterns:
+          - "net.revelc.code.formatter:*"
+          - "org.apache.maven.plugins:*"
+
+  # Docker base image (UBI minimal used in Dockerfile.native)
+  - package-ecosystem: docker
+    directory: /src/main/docker
+    schedule:
+      interval: weekly
