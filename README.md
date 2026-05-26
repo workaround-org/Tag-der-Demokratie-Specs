@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.svg" alt="fundrays" width="340">
+  <img src="logo-readme.svg" alt="fundrays" width="340">
 </p>
 
 <p align="center">
