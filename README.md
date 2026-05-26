@@ -1,6 +1,23 @@
-# fundrays
+<p align="center">
+  <img src="logo.svg" alt="fundrays" width="340">
+</p>
 
-A lightweight donation management tool — create campaigns with goal amounts, share them via QR code and link, and track contributions in real time.
+<p align="center">
+  <a href="https://github.com/workaround-org/fundrays/actions/workflows/native-image.yml">
+    <img src="https://github.com/workaround-org/fundrays/actions/workflows/native-image.yml/badge.svg" alt="Native Image CI">
+  </a>
+  <a href="https://github.com/workaround-org/fundrays/pkgs/container/fundrays">
+    <img src="https://img.shields.io/badge/container-ghcr.io-ed2a91?logo=docker&logoColor=white" alt="Container">
+  </a>
+  <img src="https://img.shields.io/badge/Quarkus-3.35.4-4695EB?logo=quarkus&logoColor=white" alt="Quarkus">
+  <img src="https://img.shields.io/badge/Java-25-ed2a91?logo=openjdk&logoColor=white" alt="Java 25">
+  <img src="https://img.shields.io/badge/native-GraalVM-ed2a91" alt="GraalVM native">
+  <img src="https://img.shields.io/github/license/workaround-org/fundrays?color=ed2a91" alt="MIT License">
+</p>
+
+<p align="center">A lightweight donation management tool — create campaigns with goal amounts, share them via QR code and link, and track contributions in real time.</p>
+
+---
 
 ## Tech stack
 
