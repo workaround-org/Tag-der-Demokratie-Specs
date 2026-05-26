@@ -48,16 +48,6 @@ The resulting binary is at `target/*-runner`. The Docker image is built from `sr
 | `GET` | `/api/donations` | List donations (admin) |
 | `POST` | `/api/donations/{slug}` | Record a donation |
 
-## Project structure
-
-```
-src/main/java/de/fundrays/
-├── campaign/       # Campaigns — api, domain, repository, service
-├── donation/       # Donations — api, domain, repository, service
-├── admin/          # Admin UI and authentication
-└── shared/         # Cross-cutting types and helpers
-```
-
 ## CI / CD
 
 Every push to `main` builds a native image and pushes it to `ghcr.io` as `:latest`. Release tags matching `fundrays-X.Y.Z` additionally push versioned tags. Dependabot keeps Maven dependencies, Docker base images, and GitHub Actions up to date.
