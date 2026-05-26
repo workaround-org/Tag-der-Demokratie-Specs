@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{#insert title /} — fundrays Admin</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --brand: #ed2a91; --brand-dark: #c41e77; --brand-subtle: #fce7f3;
+      --sidebar-bg: #160d14; --sidebar-text: #d4b8cd; --sidebar-hover: #2a1528;
+      --danger: #ef4444; --warning: #f59e0b; --success: #22c55e;
+      --bg: #fafafa; --card: #ffffff; --text: #111827; --muted: #6b7280; --border: #e5e7eb;
+    }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); }
+    .layout { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 224px; min-height: 100vh; background: var(--sidebar-bg); color: var(--sidebar-text);
+      display: flex; flex-direction: column; position: fixed; top: 0; left: 0; z-index: 10;
+    }
+    .brand {
+      padding: 1.375rem 1.25rem 1.125rem; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .brand img { width: 152px; height: auto; display: block; }
+    .nav-links { list-style: none; padding: 0.5rem 0; flex: 1; }
+    .nav-links li a {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.625rem 1.25rem; color: var(--sidebar-text); text-decoration: none;
+      font-size: 0.875rem; border-left: 3px solid transparent; transition: all 0.15s;
+    }
+    .nav-links li a:hover { background: var(--sidebar-hover); color: #fff; border-left-color: var(--brand); }
+    .sidebar-footer { padding: 1rem 1.25rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .logout-btn {
+      width: 100%; padding: 0.5rem 0.75rem; background: transparent; color: var(--sidebar-text);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 0.375rem; cursor: pointer; font-size: 0.8125rem;
+      text-align: left; transition: all 0.15s;
+    }
+    .logout-btn:hover { background: var(--sidebar-hover); color: #fff; border-color: var(--brand); }
+
+    /* Content area */
+    .main { margin-left: 224px; flex: 1; }
+    .content { padding: 2rem; max-width: 1200px; }
+
+    /* Page header */
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+    h1 { font-size: 1.375rem; font-weight: 600; }
+
+    /* Alerts */
+    .alert { padding: 0.75rem 1rem; border-radius: 0.375rem; margin-bottom: 1.25rem; font-size: 0.875rem; }
+    .alert-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .alert-error   { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 500;
+      text-decoration: none; cursor: pointer; border: none; transition: opacity 0.15s; white-space: nowrap;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary   { background: var(--brand); color: #fff; }
+    .btn-danger    { background: var(--danger); color: #fff; }
+    .btn-warning   { background: var(--warning); color: #fff; }
+    .btn-secondary { background: var(--border); color: var(--text); }
+    .btn-sm { padding: 0.3rem 0.625rem; font-size: 0.8125rem; }
+
+    /* Cards */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 0.5rem; }
+    .card-body { padding: 1.25rem; }
+
+    /* Stats grid */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.75rem; }
+    .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1.25rem; }
+    .stat-value { font-size: 1.875rem; font-weight: 700; color: var(--brand); line-height: 1; }
+    .stat-label { font-size: 0.8125rem; color: var(--muted); margin-top: 0.375rem; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    thead th {
+      padding: 0.625rem 0.875rem; text-align: left; font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);
+      border-bottom: 2px solid var(--border); white-space: nowrap;
+    }
+    tbody td { padding: 0.75rem 0.875rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--brand-subtle); }
+
+    /* Badges */
+    .badge { display: inline-block; padding: 0.2rem 0.55rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+    .badge-active    { background: #dcfce7; color: #166534; }
+    .badge-paused    { background: #fef9c3; color: #854d0e; }
+    .badge-completed { background: var(--brand-subtle); color: var(--brand-dark); }
+    .badge-archived  { background: #f3f4f6; color: #6b7280; }
+    .badge-pending   { background: #fef9c3; color: #854d0e; }
+    .badge-confirmed { background: #dcfce7; color: #166534; }
+    .badge-failed    { background: #fee2e2; color: #991b1b; }
+    .badge-refunded  { background: #f3f4f6; color: #6b7280; }
+
+    /* Progress bar */
+    .prog-wrap { background: var(--border); border-radius: 9999px; height: 6px; min-width: 80px; }
+    .prog-bar  { background: var(--brand); border-radius: 9999px; height: 6px; max-width: 100%; }
+
+    /* Forms */
+    .form-group { margin-bottom: 1.125rem; }
+    .form-group label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.375rem; }
+    .form-hint { font-size: 0.8125rem; color: var(--muted); margin-top: 0.25rem; }
+    .form-control {
+      width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: 0.375rem;
+      font-size: 0.875rem; background: #fff; color: var(--text); transition: border-color 0.15s;
+    }
+    .form-control:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(237,42,145,0.1); }
+    .form-control[readonly] { background: #f9fafb; color: var(--muted); cursor: default; }
+    textarea.form-control { resize: vertical; min-height: 100px; }
+    .form-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; align-items: center; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* Misc */
+    .actions { display: flex; gap: 0.375rem; }
+    .text-muted { color: var(--muted); }
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 0.9375rem; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="brand">
+      <img src="/logo.svg" alt="fundrays">
+    </div>
+    <ul class="nav-links">
+      <li><a href="/admin">Dashboard</a></li>
+      <li><a href="/admin/campaigns">Kampagnen</a></li>
+      <li><a href="/admin/donations">Spenden</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <form method="post" action="/admin/logout">
+        <input type="hidden" name="{inject:csrf.parameterName}" value="{inject:csrf.token}">
+        <button type="submit" class="logout-btn">Abmelden</button>
+      </form>
+    </div>
+  </nav>
+
+  <div class="main">
+    <div class="content">
+      {#if flash:message}<div class="alert alert-success">{flash:message}</div>{/if}
+      {#if flash:error}<div class="alert alert-error">{flash:error}</div>{/if}
+      {#insert content /}
+    </div>
+  </div>
+</div>
+</body>
+</html>

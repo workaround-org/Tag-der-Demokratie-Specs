@@ -100,6 +100,7 @@ Sessionx.vim
 *~
 # Auto-generated tag files
 tags
+!src/main/resources/templates/tags/
 # Persistent undo
 [._]*.un~
 
