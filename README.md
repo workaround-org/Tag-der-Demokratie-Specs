@@ -62,8 +62,10 @@ The resulting binary is at `target/*-runner`. The Docker image is built from `sr
 | `GET` | `/api/campaigns/{slug}` | Get a single campaign |
 | `POST` | `/api/campaigns` | Create a campaign (admin) |
 | `PATCH` | `/api/campaigns/{slug}` | Update a campaign (admin) |
+| `GET` | `/api/campaigns/{slug}/qrcode` | QR code for the donation URL (admin); `?format=png` (default) or `?format=svg`; optional `utm_*` params appended to encoded URL |
 | `GET` | `/api/donations` | List donations (admin) |
 | `POST` | `/api/donations/{slug}` | Record a donation |
+| `GET` | `/d/{slug}` | Short alias — 302 redirect to `/donate/{slug}` |
 
 ## CI / CD
 
