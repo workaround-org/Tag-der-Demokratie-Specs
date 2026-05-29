@@ -27,6 +27,7 @@
 - **quarkus-security-jpa** — form-based admin authentication (BCrypt)
 - **quarkus-rest** + **quarkus-rest-jackson** — typesafe REST API
 - **quarkus-smallrye-openapi** — OpenAPI / Swagger UI
+- **quarkus-mailer** — donor confirmation + admin notification mails (SMTP, Qute mail templates)
 
 ## Running in dev mode
 
