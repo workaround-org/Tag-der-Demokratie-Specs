@@ -3,6 +3,7 @@ package de.fundrays.campaign.api;
 import de.fundrays.campaign.domain.Campaign;
 import de.fundrays.campaign.service.CampaignNotFoundException;
 import de.fundrays.campaign.service.CampaignService;
+import de.fundrays.campaign.service.QrCodeService;
 import de.fundrays.campaign.service.SlugConflictException;
 import de.fundrays.shared.ConflictException;
 import org.jboss.resteasy.reactive.ResponseStatus;
@@ -10,7 +11,9 @@ import org.jboss.resteasy.reactive.ResponseStatus;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.PATCH;
@@ -18,9 +21,16 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.core.UriInfo;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 @Path("/api/campaigns")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,8 +38,13 @@ import java.util.List;
 public class CampaignResource
 {
 
+	private static final int QR_CODE_SIZE_PX = 512;
+
 	@Inject
 	CampaignService campaignService;
+
+	@Inject
+	QrCodeService qrCodeService;
 
 	@GET
 	public List<CampaignResponse> listActive()
@@ -96,6 +111,44 @@ public class CampaignResource
 		{
 			throw new ConflictException(e.getMessage());
 		}
+	}
+
+	@GET
+	@Path("/{slug}/qrcode")
+	@RolesAllowed("admin")
+	@Produces({ "image/png", "image/svg+xml" })
+	public Response qrcode(@PathParam("slug") String slug,
+		@QueryParam("format") @DefaultValue("png") String format,
+		@Context UriInfo uriInfo)
+	{
+		campaignService.findBySlug(slug)
+			.orElseThrow(() -> new NotFoundException("Campaign not found: " + slug));
+
+		String donationUrl = buildDonationUrl(uriInfo, slug);
+
+		return switch (format)
+		{
+			case "png" -> Response.ok(qrCodeService.renderPng(donationUrl, QR_CODE_SIZE_PX))
+				.type("image/png")
+				.build();
+			case "svg" -> Response.ok(qrCodeService.renderSvg(donationUrl, QR_CODE_SIZE_PX).getBytes(StandardCharsets.UTF_8))
+				.type("image/svg+xml")
+				.build();
+			default -> throw new BadRequestException("Unsupported format: " + format + " (expected 'png' or 'svg')");
+		};
+	}
+
+	private String buildDonationUrl(UriInfo uriInfo, String slug)
+	{
+		UriBuilder builder = uriInfo.getBaseUriBuilder().replacePath("/donate/" + slug);
+		for (Map.Entry<String, List<String>> entry : uriInfo.getQueryParameters().entrySet())
+		{
+			if (entry.getKey().startsWith("utm_"))
+			{
+				builder.queryParam(entry.getKey(), entry.getValue().toArray());
+			}
+		}
+		return builder.build().toString();
 	}
 
 	private CampaignResponse toResponse(Campaign c)

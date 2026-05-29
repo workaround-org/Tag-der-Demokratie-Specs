@@ -67,5 +67,39 @@
   </div>
 </div>
 
+<div class="card">
+  <div class="card-body">
+    <div class="qr-card-header">
+      <h2>QR-Code & Link</h2>
+      <p>Dieser QR-Code und Kurzlink verweisen auf die öffentliche Spendenseite der Kampagne.</p>
+    </div>
+
+    <div class="qr-layout">
+      <img class="qr-image"
+           src="/api/campaigns/{campaign.slug}/qrcode?format=svg"
+           alt="QR-Code für Kampagne {campaign.slug}">
+      <div class="qr-link-col">
+        <label for="donateUrl">Spendenlink</label>
+        <input class="form-control" type="text" id="donateUrl"
+               value="/donate/{campaign.slug}" readonly>
+        <button type="button" class="btn btn-secondary"
+                onclick="navigator.clipboard.writeText(new URL('/donate/{campaign.slug}', window.location.origin).toString())">
+          Link kopieren
+        </button>
+        <p class="qr-shortlink">Kurzlink: <code>/d/{campaign.slug}</code></p>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a class="btn btn-secondary"
+         href="/api/campaigns/{campaign.slug}/qrcode?format=png"
+         download="qr-{campaign.slug}.png">PNG herunterladen</a>
+      <a class="btn btn-secondary"
+         href="/api/campaigns/{campaign.slug}/qrcode?format=svg"
+         download="qr-{campaign.slug}.svg">SVG herunterladen</a>
+    </div>
+  </div>
+</div>
+
 {/content}
 {/include}
