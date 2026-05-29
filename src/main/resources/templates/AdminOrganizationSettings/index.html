@@ -1,0 +1,122 @@
+{#include tags/adminLayout}
+{#title}Organisation{/title}
+{#content}
+
+<div class="page-header">
+  <h1>Organisationseinstellungen</h1>
+</div>
+
+<form method="post" action="/admin/settings">
+  <input type="hidden" name="{inject:csrf.parameterName}" value="{inject:csrf.token}">
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-body">
+      <h2 style="font-size:1.0625rem;font-weight:600;margin-bottom:1rem;">Organisation</h2>
+
+      <div class="form-group">
+        <label for="orgName">Name der Organisation</label>
+        <input class="form-control" type="text" id="orgName" name="orgName"
+               value="{settings.orgName ?: ''}">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="orgStreet">Straße</label>
+          <input class="form-control" type="text" id="orgStreet" name="orgStreet"
+                 value="{settings.orgStreet ?: ''}">
+        </div>
+        <div class="form-group">
+          <label for="orgZip">PLZ</label>
+          <input class="form-control" type="text" id="orgZip" name="orgZip"
+                 value="{settings.orgZip ?: ''}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="orgCity">Ort</label>
+        <input class="form-control" type="text" id="orgCity" name="orgCity"
+               value="{settings.orgCity ?: ''}">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="orgTaxId">Steuernummer / Freistellungsbescheid-Nr.</label>
+          <input class="form-control" type="text" id="orgTaxId" name="orgTaxId"
+                 value="{settings.orgTaxId ?: ''}">
+        </div>
+        <div class="form-group">
+          <label for="orgIssuingAuthority">Ausstellendes Finanzamt</label>
+          <input class="form-control" type="text" id="orgIssuingAuthority" name="orgIssuingAuthority"
+                 value="{settings.orgIssuingAuthority ?: ''}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="orgExemptionDate">Datum des Freistellungsbescheids</label>
+        <input class="form-control" type="date" id="orgExemptionDate" name="orgExemptionDate"
+               value="{exemptionDateValue}">
+      </div>
+
+      <div class="form-group">
+        <label for="orgPurpose">Satzungsmäßiger Zweck</label>
+        <textarea class="form-control" id="orgPurpose" name="orgPurpose">{settings.orgPurpose ?: ''}</textarea>
+        <p class="form-hint">Wird in der Zuwendungsbestätigung verwendet.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-body">
+      <h2 style="font-size:1.0625rem;font-weight:600;margin-bottom:1rem;">E-Mail / SMTP</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="smtpHost">SMTP Host</label>
+          <input class="form-control" type="text" id="smtpHost" name="smtpHost"
+                 value="{settings.smtpHost ?: ''}" placeholder="smtp.example.org">
+        </div>
+        <div class="form-group">
+          <label for="smtpPort">SMTP Port</label>
+          <input class="form-control" type="number" id="smtpPort" name="smtpPort"
+                 value="{settings.smtpPort ?: ''}" min="1" max="65535" placeholder="587">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="smtpUser">SMTP Benutzer</label>
+          <input class="form-control" type="text" id="smtpUser" name="smtpUser"
+                 value="{settings.smtpUser ?: ''}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="smtpPassword">SMTP Passwort</label>
+          <input class="form-control" type="password" id="smtpPassword" name="smtpPassword"
+                 value="" autocomplete="new-password"
+                 placeholder="{#if smtpPasswordSet}••••••••  (leer lassen, um nicht zu ändern){#else}neues Passwort setzen{/if}">
+          <p class="form-hint">Das gespeicherte Passwort wird aus Sicherheitsgründen nicht angezeigt. Leer lassen, um es unverändert zu lassen.</p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="smtpFrom">Absender-Adresse (From)</label>
+          <input class="form-control" type="email" id="smtpFrom" name="smtpFrom"
+                 value="{settings.smtpFrom ?: ''}" placeholder="noreply@example.org">
+        </div>
+        <div class="form-group">
+          <label for="adminNotificationEmail">Admin-Benachrichtigungen an</label>
+          <input class="form-control" type="email" id="adminNotificationEmail" name="adminNotificationEmail"
+                 value="{settings.adminNotificationEmail ?: ''}" placeholder="admin@example.org">
+          <p class="form-hint">Leer lassen, um Admin-Benachrichtigungen zu deaktivieren.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Speichern</button>
+  </div>
+</form>
+
+{/content}
+{/include}

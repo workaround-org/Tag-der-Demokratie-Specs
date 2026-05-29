@@ -1,0 +1,14 @@
+Hallo {donorName},
+
+vielen Dank für Ihre Spende an {orgName}!
+
+Kampagne:    {campaignTitle}
+Betrag:      {amount}
+Datum:       {date}
+Referenz:    {reference}
+
+Ohne Sie wäre unsere Arbeit nicht möglich. Wir bestätigen hiermit den
+Eingang Ihrer Spende.
+
+Mit herzlichem Dank
+{orgName}

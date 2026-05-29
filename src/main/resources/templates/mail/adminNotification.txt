@@ -1,0 +1,8 @@
+Neue bestätigte Spende für {orgName}:
+
+Kampagne:    {campaignTitle}
+Spender:     {donorName}
+E-Mail:      {donorEmail}
+Betrag:      {amount}
+Datum:       {date}
+Referenz:    {reference}
